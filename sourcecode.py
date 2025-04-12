@@ -30,23 +30,20 @@ def clean_text(text):
     return text
 df['content'] = df['text'].apply(clean_text)
 
-#now converting, clean text into numbers using TF-IDF(Term Frequency – Inverse Document Frequency)
-#3000 is you telling th emodel to basically only using the top 300 imp words it finds, can ince or dec accordingly
+#now converting, clean text into numbers
 vectorizer = TfidfVectorizer(max_features=2000)
 X = vectorizer.fit_transform(df['content'])
 
-#defining labels:
 y = df['label']
 
 #splitting dataset:
-#here you're using only 80% for training, rest for testing
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=54)
 
-#building a logistic regression model
-MlModel = LogisticRegression()
-MlModel.fit(X_train, y_train) #this is where training happens
 
-#now we'll evaluate the model:
+MlModel = LogisticRegression()
+MlModel.fit(X_train, y_train) 
+
+
 y_pred = MlModel.predict(X_test)
 print("Accuracy:", accuracy_score(y_test, y_pred))
 print("Classification Report:\n", classification_report(y_test, y_pred))
